@@ -164,7 +164,7 @@
   [m]
   (…))
 
-(defn ^:not-implemented select-keysp
+(defn select-keysp
   "given a map `m`, return a map containing only the key-value pairs that satisfy `pred`."
   [m pred]
   (…))

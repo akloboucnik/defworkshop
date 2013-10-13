@@ -36,12 +36,12 @@
 ;; The first exercise is to write a function that takes an vector of three
 ;; elements and returns the the first and last element as a vector.
 
-(defn ^:not-implemented unpack
+(defn unpack
   "Write a function which takes a vector containing first, middle
   and last name binds these to their own names and returns a vector of
   the first and last element"
-  [_]
-  (…))
+  [[first middle last]]
+  [first last])
 
 ;; Actually, there are cases where we don't need parts of the unpacked
 ;; collections. We didn't need the middle element. The convention then is to
@@ -64,17 +64,17 @@
 
 ;; You feel up for this? Alright, how about implementing `first` by yourself?
 
-(defn ^:not-implemented head
+(defn head
   "Implement head using destructuring."
-  [_]
-  (…))
+  [[first & rest]]
+  first)
 
 ;; While we're on a roll, have your take on `tail` as well!
 
-(defn ^:not-implemented tail
+(defn tail
   "Implement tail using destructuring."
-  [_]
-  (…))
+  [[_ & tail]]
+  tail)
 
 ;; So, we saw that we can destructure the whole data structure. But what if we
 ;; want to destructure the data structure and keep a reference to the
@@ -103,9 +103,9 @@
 ;; see all the concepts so far in action. For the multiplication, don't be
 ;; afraid to use `map`.
 
-(defn ^:not-implemented multiply-second
-  [_]
-  (…))
+(defn multiply-second
+  [[_ multiplier & rest :as coll]]
+  (map #(* multiplier %) coll))
 
 ;; As for a very last example of vector destructuring, let me tell you that
 ;; `for` also takes binding forms, so you could destructure in a `for` as well.
@@ -119,10 +119,11 @@
 ;; Now, write a function `for` that takes this vector of number pairs and uses
 ;; a `for` to destructure it and return the multiplied results.
 
-(defn ^:not-implemented multiplication-table
+(defn multiplication-table
   "Take a vector of number pairs and returns a vector of multiplied results"
-  [_]
-  (…))
+  [coll]
+  (for [[a b] coll]
+    (* a b)))
 
 ;; So, that was more of the same, you should be proficient now with
 ;; destructuring vector. In fact, you should be a master of destructuring
@@ -134,9 +135,9 @@
 ;; Similar to before, you can use a map and the key you want to have to extract
 ;; it.
 
-(defn ^:not-implemented get-clojure-key
-  [_]
-  (…))
+(defn get-clojure-key
+  [{clojure :clojure}]
+  clojure)
 
 ;; But you see, for every key you extract, you have to specify a binding name
 ;; (key `:clojure`, binding name `clojure`). This sucks. It's repetitive. Now
@@ -144,20 +145,20 @@
 ;; Why of course, there is! You can use `:keys` to specify a vector of keys
 ;; that you want to get.
 
-(defn ^:not-implemented get-clojure-key
-  [_]
-  (…))
+(defn get-clojure-key
+  [{:keys [clojure]}]
+  clojure)
 
 (comment
   (get-clojure-key {:java "is verbose" :clojure "is awesome"}))
 
 ;; Now isn't that charming? Try it now yourself:
 
-(defn ^:not-implemented project
+(defn project
   "Write a function that given a map returns a vector containing
 the values associated with keys :k1 :k2 :k3"
-  [_]
-  (…))
+  [{:keys [k1 k2 k3]}]
+  [k1 k2 k3])
 
 ;;; ### Bonus exercises
 
@@ -167,10 +168,10 @@ the values associated with keys :k1 :k2 :k3"
 ;;
 ;; First, here's a vector of vectors:
 
-(defn ^:not-implemented recursive-destructuring
+(defn recursive-destructuring
   "Write a function which takes a vector of vectors and returns the second"
-  [_]
-  (…))
+  [[_ [_ second]]]
+  second)
 
 ;; to get you going, you could call it with a data structure like this:
 
@@ -180,11 +181,11 @@ the values associated with keys :k1 :k2 :k3"
 ;; Now, try a map of maps. Some hints: first use the normal `:foo`
 ;; destructuring, then nest the `keys` destructuring.
 
-(defn ^:not-implemented nested-access
+(defn nested-access
   "given the following datastructure, extract [:user :name] and [:user :age] and
 return them in a vector."
-  [_]
-  (…))
+  [{{:keys [name age]} :user}]
+  [name age])
 
 ;; Here's an example call:
 (comment
