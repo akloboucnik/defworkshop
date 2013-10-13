@@ -32,10 +32,10 @@
 ;; To avoid confusion, we'll start with a simple function that returns a
 ;; function. A FunctionFactory if you like!
 
-(defn ^:not-implemented fn-in-fn
+(defn fn-in-fn
   "Write a function that returns a function that returns 42"
   []
-  (…))
+  (fn [] 42))
 
 ;; Now call it and get 42:
 
@@ -47,11 +47,11 @@
 ;; value. Sorry if this is getting repetitive, but it's better if you get the
 ;; exercise and avoid the confusion now than later.
 
-(defn ^:not-implemented apply-apply
+(defn apply-apply
   "Write a function that takes a function and calls the function, and then
   calls the resulting function"
   [f]
-  (…))
+  ((f)))
 
 ;; Having this, it should work:
 
@@ -64,11 +64,12 @@
 ;; what happens if you move 42 up one level? Let's put it in the outer
 ;; functions scope.
 
-(defn ^:not-implemented scoped-fn-in-fn
+(defn scoped-fn-in-fn
   "Write a function that `let`s `42` to `fourtytwo` and returns a function
   which returns `fourtytwo`"
   []
-  (…))
+  (let [fourtytwo 42]
+    (fn [] fourtytwo)))
 
 ;; So, `let` opens a scope, and the `fn` is in a scope. See if it makes a
 ;; difference:
@@ -85,13 +86,13 @@
 ;; approach is to take an existing function, and preconfigure it.
 ;;
 
-(defn ^:not-implemented multiply-by
+(defn multiply-by
   [n]
-  …)
+  (partial * n))
 
 ;; So, we could build a function that just increments things:
 
-(def increment …)
+(def increment (partial + 1))
 
 (comment
   (increment 1)
@@ -124,14 +125,15 @@
 ;; function)) to do the equivalent of ref = function(ref) from other languages.
 ;; More information on changing values in the recursion chapter.
 
-(defn ^:not-implemented make-counter
+(defn make-counter
   "Returns a function that increments the internal state everytime it is
   called"
   []
-  (…))
+  (let [counter (ref 0)]
+    (fn [] (dosync (alter counter inc)))))
 
 ; some code to try what we built
-(def ^:not-implemented my-counter …)
+(def my-counter make-counter)
 
 (comment
   (my-counter))
@@ -154,11 +156,11 @@
 ;; such a function. Implement `assoc` in this way: `assoc` takes a hashmap as
 ;; first argument, a `:key` as second argument and a value as third.
 
-(defn ^:not-implemented curried-assoc
+(defn curried-assoc
   "Write a version of assoc that consists of functions returning functions.
   You may call assoc inside the function."
   [h]
-  (…))
+  (fn [key] (fn [val] (assoc h key val))))
 
 (comment
   (((curried-assoc {}) :language) "Clojure"))
