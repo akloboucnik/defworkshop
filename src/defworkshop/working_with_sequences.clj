@@ -142,8 +142,7 @@
 (defn repeat-times
   "For the given `number`, return a sequence where this number is repeated `n` times"
   [number n]
-  (let [res '()]
-    (flatten (map (fn [i] (cons number res)) (range n)))))
+  (take n (range number 0 0)))
 
 (defn read-and-summarize-contents
   "Given a filename of the file that holds numbers (newline-separated), write a function that parses numbers in file,
@@ -166,7 +165,7 @@
   [m]
   (…))
 
-(defn select-keysp
+(defn ^:not-implemented select-keysp
   "given a map `m`, return a map containing only the key-value pairs that satisfy `pred`."
   [m pred]
   (…))
