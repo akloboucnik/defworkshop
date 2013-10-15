@@ -139,16 +139,18 @@
   [string m]
   (…))
 
-(defn ^:not-implemented repeat-times
+(defn repeat-times
   "For the given `number`, return a sequence where this number is repeated `n` times"
   [number n]
-  (…))
+  (let [res '()]
+    (flatten (map (fn [i] (cons number res)) (range n)))))
 
-(defn ^:not-implemented read-and-summarize-contents
+(defn read-and-summarize-contents
   "Given a filename of the file that holds numbers (newline-separated), write a function that parses numbers in file,
    summarizes them and returns. You can use `read-string` to parse the particular number."
   [filename]
-  (…))
+  (let [numbers (clojure.string/split-lines (slurp filename))]
+    (reduce + (map #(read-string %) numbers))))
 
 (defn ^:not-implemented reduce-assoc
   "In this function, use reduce to get a hash map from vector of pairs.
