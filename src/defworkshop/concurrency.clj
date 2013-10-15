@@ -11,38 +11,41 @@
 ;; First, let's write a function that constructs a bank account, which is basically an atom.
 ;;
 
-(defn ^:not-implemented make-bank-account
+(defn make-bank-account
   "Write a function that constructs a bank account out of given start amount.
    Use atoms to hold the amount."
   [start-amount]
-  (…))
+  (atom start-amount))
 
-(defn ^:not-implemented deposite
+(defn deposite
   "Write a function that receives an `account` as a first argument and adds money
    to the balance by using `swap!` and `+` function.
 
    Don't forget to check if amount to deposite is positive ;)"
   [account amount-to-deposite]
-  (…))
+  (swap! account + amount-to-deposite))
 
-(defn ^:not-implemented withdraw
+(defn withdraw
   "Write a function that receives an `account` as a first argument and withdraws money
    from the balance by using `swap!` and `-` function.
 
    Don't forget to check if there're sufficient funds on balance, throw `RuntimeException`
    otherwise."
   [account amount-to-withdraw]
-  (…))
+  (if (> amount-to-withdraw @account)
+    (throw RuntimeException "not enough funds on account")
+    (swap! account - amount-to-withdraw)))
 
-(defn ^:not-implemented transfer
+(defn transfer
   "Now write a transfer function that will transfer an amount from one bank account to another."
   [account1 account2 amount]
-  (…))
+  (swap! account1 withdraw amount)
+  (swap! account2 deposite amount))
 
-(defn ^:not-implemented get-balance
+(defn get-balance
   "Write a function that returns current amount of money on the balance by using dereferecing."
   [account]
-  (…))
+  @account)
 
 
 ;; # Tumbling Window
@@ -99,10 +102,19 @@
 (defonce threads-count 32)
 (defonce executors (Executors/newFixedThreadPool threads-count))
 
-(defn ^:not-implemented crack-password
+(defn crack-password
   "You can get the dictionary from here: https://dl.dropboxusercontent.com/u/2516311/dictionary.txt"
-  []
-  (…))
+   []
+   (let [content (slurp "dictionary.txt")
+         passwords (clojure.string/split-lines content)
+         solution (atom nil)
+         tasks (map (fn [password]
+                       (fn []
+                         (when (= 200 (:status (try-password password)))
+                           (reset! solution password))))
+                     passwords)]
+         (.invokeAll executors tasks)
+         @solution))
 
 ;; # Word Count
 ;;
@@ -164,4 +176,6 @@
 
    Use `CountDownLatch` to make sure every thread has finished it's work."
   [iterations]
-  (…))
+  (let [latch (CountDownLatch. iterations)
+        pi (atom 0)
+        ]))
