@@ -158,19 +158,21 @@
   [list]
   (…))
 
-(defn ^:not-implemented stringify-map
+(defn stringify-map
   "Given an array of name and age, return a string that contains name and age in format `<name>: <age>`
 
    For that, use destructuring for keys and values and `str` to compose a new string."
   [m]
-  (…))
+  (map #(str % ": " (m %)) (keys m)))
 
-(defn ^:not-implemented select-keysp
+(defn select-keysp
   "given a map `m`, return a map containing only the key-value pairs that satisfy `pred`."
   [m pred]
-  (…))
+  (select-keys m (filter pred (keys m))))
 
 (defn ^:not-implemented invert-map+
-  "given a map, invert the mapping as previously. this time, however we will deal with duplicates in a defined way: for duplicate values in the original map, the inverted map should contain a mapping from value to a set of keys."
+  "given a map, invert the mapping as previously. this time, however we will deal with duplicates
+   in a defined way: for duplicate values in the original map, the inverted map should contain a
+   mapping from value to a set of keys."
   [m]
   (…))
