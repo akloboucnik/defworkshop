@@ -151,12 +151,12 @@
   (let [numbers (clojure.string/split-lines (slurp filename))]
     (reduce + (map #(read-string %) numbers))))
 
-(defn ^:not-implemented reduce-assoc
+(defn reduce-assoc
   "In this function, use reduce to get a hash map from vector of pairs.
 
    This example illustrates how to use destructuring"
   [list]
-  (…))
+  (zipmap (flatten (partition 1 2 list)) (flatten (partition 1 2 (rest list)))))
 
 (defn stringify-map
   "Given an array of name and age, return a string that contains name and age in format `<name>: <age>`
