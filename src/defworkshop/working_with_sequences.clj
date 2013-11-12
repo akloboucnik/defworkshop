@@ -133,11 +133,15 @@
   [seq]
   (sort-by :age seq))
 
-(defn ^:not-implemented interpolate-words
+(defn interpolate-words
   "Given a string of format \"Hello %name%, you're %age% years old!\", and map {:name \"Alex\" :age 25},
    write an interpolation function that would replace %name% with \"Alex\" and %age% with 25."
   [string m]
-  (…))
+  (let [matches (re-seq #"%(\w+)%" string)
+        data-keys (map #(keyword %) (map #(% 1) matches)) ; TODO doubled map, seriously?
+        string (clojure.string/replace string #"%(\w+)%" "%s")
+        replacements (map #(m %) data-keys)]
+    (apply format string (vec replacements))))
 
 (defn repeat-times
   "For the given `number`, return a sequence where this number is repeated `n` times"
@@ -156,7 +160,8 @@
 
    This example illustrates how to use destructuring"
   [list]
-  (zipmap (flatten (partition 1 2 list)) (flatten (partition 1 2 (rest list)))))
+  (comment zipmap (flatten (partition 1 2 list)) (flatten (partition 1 2 (rest list))))
+  (apply hash-map list))
 
 (defn stringify-map
   "Given an array of name and age, return a string that contains name and age in format `<name>: <age>`
