@@ -67,14 +67,19 @@
                   (recur uri-rest pattern-rest)
                   (= uri pattern))))))
 
-(defn ^:not-implemented extract-arguments
+(defn extract-arguments
   "Extracts named arguments from the string, based on a pattern."
   [uri pattern]
   (let [uri-parts   (get-parts uri)
         pattern-parts (get-parts pattern)]
     (and (= (count uri-parts)
             (count pattern-parts))
-         (…))))
+         (let [unfiltered-map (zipmap pattern-parts uri-parts)
+               var-keys (filter #(.startsWith % ":") (keys unfiltered-map))
+               filtered-map (select-keys unfiltered-map var-keys)]
+           (into {} (map (fn [pair]
+                           [(keyword (clojure.string/replace (first pair) ":" "")) (last pair)])
+                         filtered-map))))))
 
 (defn ^:not-implemented dispatch
   "Dispatches the route based on route map"

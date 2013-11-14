@@ -18,7 +18,5 @@
     * `configuration-from-env`
     * `configuration-from-map`
 * uri_parser
-    * `extract-arguments`
     * `dispatch``
-
 
