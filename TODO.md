@@ -20,6 +20,5 @@
 * uri_parser
     * `extract-arguments`
     * `dispatch``
-* working_with_sequences
-    * `invert-map+`
+
 

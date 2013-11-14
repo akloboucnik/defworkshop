@@ -175,9 +175,16 @@
   [m pred]
   (select-keys m (filter pred (keys m))))
 
-(defn ^:not-implemented invert-map+
+(defn invert-map+
   "given a map, invert the mapping as previously. this time, however we will deal with duplicates
    in a defined way: for duplicate values in the original map, the inverted map should contain a
    mapping from value to a set of keys."
   [m]
-  (…))
+    (reduce (fn [res [k v]] ; reduce iterates over tuples from `m` map -> destr. to [k v]
+              (cond
+                (coll? v) (reduce #(assoc %1 %2 k) res v)
+                (nil? (res v)) (assoc res v k) ; former value is not in result -> assoc
+                (and (not (nil? (res v))) (coll? (res v)))
+                      (assoc res v (conj (res v) k))
+                :else (assoc res v (conj (conj #{} (res v)) k)))) {} m))
+
