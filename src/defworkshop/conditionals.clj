@@ -14,13 +14,13 @@
 ;;    * how to use `=` function for equality check
 ;;
 
-(defn ^:not-implemented even-or-odd
+(defn even-or-odd
   "Write a function that checks wether number is even or odd and returns `:even` if it's even and `odd`
    otherwise.
 
    You can use `mod` function to find modulo, `=` to check for equality and `if` conditional."
   [number]
-  (…))
+  (if (= 0 (mod 2 number)) :even :odd))
 
 (comment
   (= :even (even-or-odd 2)))
