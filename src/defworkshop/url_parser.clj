@@ -81,7 +81,12 @@
                            [(keyword (clojure.string/replace (first pair) ":" "")) (last pair)])
                          filtered-map))))))
 
-(defn ^:not-implemented dispatch
+(defn dispatch
   "Dispatches the route based on route map"
   [uri route-map]
-  (…))
+  (let [route-hash-map (apply hash-map (flatten route-map))
+        pattern (first (filter
+                         (partial uri-matches? uri)
+                         (keys route-hash-map)))
+        route-fn (route-hash-map pattern)]
+    (route-fn (extract-arguments uri pattern))))

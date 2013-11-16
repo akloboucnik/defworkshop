@@ -17,6 +17,4 @@
 * polymorphism
     * `configuration-from-env`
     * `configuration-from-map`
-* uri_parser
-    * `dispatch``
 
